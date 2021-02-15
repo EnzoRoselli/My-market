@@ -1,4 +1,4 @@
-package tesina.product;
+package tesis.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

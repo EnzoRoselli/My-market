@@ -1,4 +1,4 @@
-package tesina.product;
+package tesis.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package tesina.product.xray;
+package tesis.product.xray;
 
 import com.amazonaws.xray.entities.Subsegment;
 import com.amazonaws.xray.spring.aop.BaseAbstractXRayInterceptor;
