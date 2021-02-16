@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("product")
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RequestMapping
 @RestController
 @Slf4j
 @XRayEnabled
@@ -31,6 +34,13 @@ public class ProductController {
     public Product getById(@PathVariable("id") Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with given id does not exist."));
+    }
+
+    @GetMapping("names")
+    public List<String> getAllNames() {
+        return repo.findAll().stream()
+                .map(Product::getName)
+                .collect(Collectors.toList());
     }
 
     @PostMapping

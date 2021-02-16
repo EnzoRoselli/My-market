@@ -18,7 +18,7 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("tesis.product"))
-                .paths(PathSelectors.ant("/**"))
+                .paths(PathSelectors.any())
                 .build();
     }
 
