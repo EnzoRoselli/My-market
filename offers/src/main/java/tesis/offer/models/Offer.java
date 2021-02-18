@@ -1,5 +1,6 @@
-package tesis.offer;
+package tesis.offer.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "offers")
@@ -35,12 +37,15 @@ public class Offer {
     private Integer cardID;
     @Column(name = "price")
     private Float price;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_type")
     private OfferTypes offerType;
     @Column(name = "from_date")
-    private Timestamp fromDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime fromDate;
     @Column(name = "to_date")
-    private Timestamp toDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime toDate;
     @Column(name = "available")
     private Boolean avaliable;
     @Column(name = "description")
