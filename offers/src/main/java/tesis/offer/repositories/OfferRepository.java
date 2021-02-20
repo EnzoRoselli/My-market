@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import tesis.offer.models.Offer;
+import tesis.offer.models.OfferTypes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             nativeQuery = true)
     List<Offer> findByCompanyID(Integer id);
 
-    List<Offer> findByClasificationAndAvaliableTrue(String clasification);
+    List<Offer> findByOfferTypeAndAvaliableTrue(OfferTypes type);
 
     List<Offer> findByFromDateGreaterThanEqualAndAvaliableTrue(LocalDateTime date);
 
@@ -33,10 +34,24 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findBySpecificDate(LocalDateTime specificDate);
 
     @Query(
+            value = "select offers.* from offers \n" +
+                    " inner join products pr on pr.id=offers.product_id\n" +
+                    " inner join subscriptions sub on sub.product_id = pr.id\n" +
+                    " inner join users us on us.id = sub.user_id\n" +
+                    " where now()>=offers.from_date and now()<=offers.to_date\n" +
+                    " and offers.available=true\n" +
+                    " and us.id=?1\n" +
+                    " group by(offers.id)",
+            nativeQuery = true)
+    List<Offer> findAvailableOfferForUser(Long idUser);
+
+    @Query(
             value = "SELECT * FROM offers o " +
                     "inner join companies cc on cc.id=o.company_id " +
                     "inner join branches br on br.company_id=cc.id " +
                     "WHERE br.city = ?1",
             nativeQuery = true)
     List<Offer> findByCity(String city);
+
+
 }

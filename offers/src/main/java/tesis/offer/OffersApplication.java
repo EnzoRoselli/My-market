@@ -15,18 +15,4 @@ public class OffersApplication {
         SpringApplication.run(OffersApplication.class, args);
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate(clientHttpRequestFactory());
-
-    }
-
-    private ClientHttpRequestFactory clientHttpRequestFactory() {
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(
-                HttpClientBuilder.create().useSystemProperties().build());
-        factory.setReadTimeout(10000);
-        factory.setConnectTimeout(2000);
-        factory.setConnectionRequestTimeout(2000);
-        return factory;
-    }
 }

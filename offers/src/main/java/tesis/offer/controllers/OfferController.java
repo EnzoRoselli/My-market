@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tesis.offer.models.Offer;
+import tesis.offer.models.OfferTypes;
 import tesis.offer.repositories.OfferRepository;
 
 import java.time.LocalDateTime;
@@ -47,9 +48,9 @@ public class OfferController {
         return repo.findByCompanyID(id);
     }
 
-    @GetMapping("clasification/{clasification}")
-    public List<Offer> getByClasification(@PathVariable("clasification") String clasification) {
-        return repo.findByClasificationAndAvaliableTrue(clasification);
+    @GetMapping("type/{type}")
+    public List<Offer> getByClasification(@PathVariable("type") String type) {
+        return repo.findByOfferTypeAndAvaliableTrue(OfferTypes.valueOf(type));
     }
 
     @GetMapping("startDate/{startDate}")
@@ -72,6 +73,10 @@ public class OfferController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(specificDate, formatter);
         return repo.findBySpecificDate(dateTime);
+    }
+    @GetMapping("user/{user}")
+    public List<Offer> getBySpecificDate(@PathVariable("user") Long userId) {
+        return repo.findAvailableOfferForUser(userId);
     }
 
     @GetMapping("city/{city}")
