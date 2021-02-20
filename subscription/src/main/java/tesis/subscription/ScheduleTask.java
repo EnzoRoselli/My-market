@@ -10,7 +10,7 @@ public class ScheduleTask {
     @Autowired
     BulkEmailSender sender;
     //sec, min, hours, day, month, dayOfWeek.
-    @Scheduled(cron = "0 18 17 * * *",zone = "GMT-3")
+    @Scheduled(cron = "0 0 12 * * *",zone = "GMT-3")
     public void reportCurrentTime() {
         sender.send();
     }
