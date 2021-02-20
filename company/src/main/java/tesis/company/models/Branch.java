@@ -26,9 +26,13 @@ public class Branch {
     private Long id;
     @Column(name = "company_id")
     private Long companyID;
-    @Column(name = "location")
-    private String location;
+    @Column(name = "address")
+    private String address;
     @Column(name = "city")
     private String city;
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
 
 }

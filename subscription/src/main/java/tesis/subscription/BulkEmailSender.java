@@ -1,6 +1,8 @@
 package tesis.subscription;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,21 +12,25 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import static javax.mail.Session.getInstance;
 
 @Slf4j
+@Service
 public class BulkEmailSender {
+    @Autowired
+    private SubsRepository repo;
 
-    public static void send() {
-        List<String> emails = new ArrayList<>();
-        emails.add("facurexjunior@gmail.com");
+    public void send() {
+        List<String> emails = new LinkedList<>(repo.takeMailInformation());
 
-        String subject = "asdasd";
+        String subject = "LAS OFERTAS QUE TENEMOS!";
 
-        String message = "XXX";
+        String message = "MIRA LAS INCREIBLES OFERTAS PARA TUS PRODUCTOS SELECCIONADOS: www.google.com";
         log.info("EMPIEZA A MANDAR LOS MAILS");
         sendBulkEmail(subject, emails, message);
     }
