@@ -14,6 +14,7 @@ public interface SubsRepository extends JpaRepository<Subscription, Long> {
                     " inner join subscriptions sub on sub.product_id = pr.id\n" +
                     " inner join users us on us.id = sub.user_id\n" +
                     " where now()>=offers.from_date and now()<=offers.to_date\n" +
+                    " and offers.available=true\n" +
                     " group by(us.email)",
             nativeQuery = true)
     List<String> takeMailInformation();

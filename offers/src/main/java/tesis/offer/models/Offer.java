@@ -37,8 +37,6 @@ public class Offer {
     private Integer cardID;
     @Column(name = "price")
     private Float price;
-    @Column(name = "clasification")
-    private String clasification;
     @Enumerated(EnumType.STRING)
     @Column(name = "offer_type")
     private OfferTypes offerType;
