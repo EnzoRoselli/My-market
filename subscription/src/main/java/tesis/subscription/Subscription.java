@@ -24,6 +24,7 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @Column(name = "user_id")
     private Long userID;
     @Column(name = "product_id")
