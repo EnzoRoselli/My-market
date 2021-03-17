@@ -25,6 +25,8 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findByFromDateGreaterThanEqualAndAvaliableTrue(LocalDateTime date);
 
+    List<Offer> findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime dateStart,LocalDateTime dateEnd,List<OfferTypes> offers);
+
     List<Offer> findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrue(LocalDateTime start, LocalDateTime end);
 
     @Query(

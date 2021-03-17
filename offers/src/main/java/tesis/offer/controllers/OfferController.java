@@ -10,14 +10,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import tesis.offer.models.Offer;
 import tesis.offer.models.OfferTypes;
 import tesis.offer.repositories.OfferRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static tesis.offer.utils.ParametersDefaultValue.CLASIFICATIONS;
+import static tesis.offer.utils.ParametersDefaultValue.OFFER_TYPES;
 
 @RequestMapping
 @RestController
@@ -53,6 +60,22 @@ public class OfferController {
         return repo.findByOfferTypeAndAvaliableTrue(OfferTypes.valueOf(type));
     }
 
+    @GetMapping("")
+    public List<Offer> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones, @RequestParam(required = false,defaultValue = OFFER_TYPES) List<OfferTypes> tipos) {
+        List<Offer> ofertas = repo.findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime.now(),LocalDateTime.now(),tipos);
+        List<String> products = getProductsByClasifications(clasificaciones);
+        return ofertas.stream()
+                .filter(v->products.contains(String.valueOf(v.getProductID())))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getProductsByClasifications(List<String> clasificaciones){
+
+     //   RestTemplate rt = new RestTemplate();
+    //   return rt.postForObject(null + clasificaciones.toString().replace("[","").replace("]",""),null,List.class);
+        return null;
+    }
+
     @GetMapping("startDate/{startDate}")
     public List<Offer> getByStartDate(@PathVariable("startDate") String startDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
@@ -74,6 +97,7 @@ public class OfferController {
         LocalDateTime dateTime = LocalDateTime.parse(specificDate, formatter);
         return repo.findBySpecificDate(dateTime);
     }
+
     @GetMapping("user/{user}")
     public List<Offer> getBySpecificDate(@PathVariable("user") Long userId) {
         return repo.findAvailableOfferForUser(userId);

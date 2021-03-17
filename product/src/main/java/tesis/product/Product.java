@@ -30,4 +30,6 @@ public class Product {
     private String image;
     @Column(name = "description")
     private String description;
+    @Column(name = "clasification")
+    private String clasification;
 }

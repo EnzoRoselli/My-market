@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static tesis.product.utils.ParametersDefaultValue.CLASIFICATIONS;
 
 @RequestMapping
 @RestController
@@ -34,6 +38,12 @@ public class ProductController {
     public Product getById(@PathVariable("id") Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with given id does not exist."));
+    }
+    @GetMapping("")
+    public List<String> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones) {
+        return repo.findByClasificationIn(clasificaciones).stream()
+                .map(p->String.valueOf(p.getId()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("names")
