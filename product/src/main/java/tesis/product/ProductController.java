@@ -40,8 +40,15 @@ public class ProductController {
                 .orElseThrow(() -> new RuntimeException("Product with given id does not exist."));
     }
     @GetMapping("")
-    public List<String> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones) {
-        return repo.findByClasificationIn(clasificaciones).stream()
+    public List<Product> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones,
+                                     @RequestParam(required = false,defaultValue = "") String name) {
+        return repo.findByClasificationInAndNameContaining(clasificaciones,name);
+    }
+    @GetMapping("/ids")
+    public List<String> getIdsByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones,
+                                     @RequestParam(required = false,defaultValue = "") String nombre) {
+        return repo.findByClasificationInAndNameContaining(clasificaciones,nombre)
+                .stream()
                 .map(p->String.valueOf(p.getId()))
                 .collect(Collectors.toList());
     }
@@ -52,6 +59,7 @@ public class ProductController {
                 .map(Product::getName)
                 .collect(Collectors.toList());
     }
+
 
     @PostMapping
     public Product save(@RequestBody @NotNull Product product) {

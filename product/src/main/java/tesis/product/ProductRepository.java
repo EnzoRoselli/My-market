@@ -1,5 +1,6 @@
 package tesis.product;
 
+import net.bytebuddy.build.Plugin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,8 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>{
 
     Optional<Product> findByName(String name);
-    List<Product> findByClasificationIn(List<String> clasifications);
+    List<Product> findByClasificationInAndNameContaining(List<String> clasifications,String name);
+
 }
