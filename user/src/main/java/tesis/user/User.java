@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
@@ -20,13 +21,13 @@ import javax.persistence.Table;
 @Data
 @ToString
 @Builder
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Builder.Default
     @Column(name = "role")
-    private String role;
+    private String role="user";
     @Column(name = "email")
     private String email;
-
 }
