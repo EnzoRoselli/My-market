@@ -49,5 +49,7 @@ public class Offer {
     private Boolean avaliable;
     @Column(name = "description")
     private String description;
+    @Column(name = "old_price")
+    private String oldPrice;
 
 }
