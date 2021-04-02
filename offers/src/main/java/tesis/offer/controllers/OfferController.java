@@ -75,7 +75,7 @@ public class OfferController {
     public List getProductsByClasifications(List<String> clasificaciones){
 
         RestTemplate rt = new RestTemplate();
-       return rt.getForObject(productUrl +"/product?clasificaciones="+ clasificaciones.toString().replace("[","").replace("]",""),List.class);
+       return rt.getForObject(productUrl +"/product/ids?clasificaciones="+ clasificaciones.toString().replace("[","").replace("]",""),List.class);
      //   return null;
     }
 

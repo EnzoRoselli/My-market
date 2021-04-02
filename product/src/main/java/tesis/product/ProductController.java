@@ -42,7 +42,7 @@ public class ProductController {
     @GetMapping("")
     public List<Product> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones,
                                      @RequestParam(required = false,defaultValue = "") String nombre) {
-        return repo.findByClasificationInAndNameContaining(clasificaciones,nombre);
+        return repo.findByClasificationInAndNameContaining(clasificaciones, nombre);
     }
     @GetMapping("/ids")
     public List<String> getIdsByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones,
