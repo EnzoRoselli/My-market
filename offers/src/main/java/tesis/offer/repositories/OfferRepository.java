@@ -13,10 +13,12 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findByProductID(Integer id);
 
+    List<Offer> findByBranchID(Integer id);
+
     @Query(
             value = "SELECT * FROM offers o " +
-                    "inner join companies cc on cc.id=o.company_id " +
-                    "inner join branches br on br.company_id=cc.id " +
+                    "inner join branches br on br.id=o.branch_id " +
+                    "inner join companies cc on cc.id=br.company_id " +
                     "WHERE cc.id = ?1",
             nativeQuery = true)
     List<Offer> findByCompanyID(Integer id);
@@ -49,8 +51,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     @Query(
             value = "SELECT * FROM offers o " +
-                    "inner join companies cc on cc.id=o.company_id " +
-                    "inner join branches br on br.company_id=cc.id " +
+                    "inner join branches br on br.id=o.branch_id " +
                     "WHERE br.city = ?1",
             nativeQuery = true)
     List<Offer> findByCity(String city);

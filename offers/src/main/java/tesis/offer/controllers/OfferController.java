@@ -53,6 +53,11 @@ public class OfferController {
         return repo.findByProductID(id);
     }
 
+    @GetMapping("branch/{id}")
+    public List<Offer> getByBranchId(@PathVariable("id") Integer id) {
+        return repo.findByBranchID(id);
+    }
+
     @GetMapping("company/{id}")
     public List<Offer> getByCompanyId(@PathVariable("id") Integer id) {
         return repo.findByCompanyID(id);
@@ -110,6 +115,4 @@ public class OfferController {
     public List<Offer> getByCity(@PathVariable("city") String city) {
         return repo.findByCity(city);
     }
-
-
 }
