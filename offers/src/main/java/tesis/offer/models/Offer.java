@@ -31,7 +31,7 @@ public class Offer {
     @Column(name = "product_id")
     private Integer productID;
     @Column(name = "branch_id")
-    private Integer branchId;
+    private Integer branchID;
     @Column(name = "card_id")
     private Integer cardID;
     @Column(name = "price")
