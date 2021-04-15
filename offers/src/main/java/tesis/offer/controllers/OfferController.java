@@ -64,19 +64,20 @@ public class OfferController {
     }
 
     @GetMapping("")
-    public List<Offer> getByFilters(@RequestParam(required = false,defaultValue = CLASIFICATIONS) List<String> clasificaciones, @RequestParam(required = false,defaultValue = OFFER_TYPES) List<OfferTypes> tipos) {
-        List<Offer> ofertas = repo.findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime.now(),LocalDateTime.now(),tipos);
-        List<String> products = getProductsByClasifications(clasificaciones);
+    public List<Offer> getByFilters(@RequestParam(required = false, defaultValue = CLASIFICATIONS) List<String> clasificaciones,
+                                    @RequestParam(required = false, defaultValue = OFFER_TYPES) List<OfferTypes> tipos,
+                                    @RequestParam(required = false, defaultValue = "") String nombre) {
+        List<Offer> ofertas = repo.findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime.now(), LocalDateTime.now(), tipos);
+        List<String> products = getProductsByClasificationsAndName(clasificaciones,nombre);
         return ofertas.stream()
-                .filter(v->products.contains(String.valueOf(v.getProductID())))
+                .filter(v -> products.contains(String.valueOf(v.getProductID())))
                 .collect(Collectors.toList());
     }
 
-    public List getProductsByClasifications(List<String> clasificaciones){
+    public List getProductsByClasificationsAndName(List<String> clasificaciones, String nombre) {
 
         RestTemplate rt = new RestTemplate();
-       return rt.getForObject(productUrl +"/product/ids?clasificaciones="+ clasificaciones.toString().replace("[","").replace("]",""),List.class);
-     //   return null;
+        return rt.getForObject(productUrl + "/product/ids?clasificaciones=" + clasificaciones.toString().replace("[", "").replace("]", "")+"&nombre="+nombre, List.class);
     }
 
     @GetMapping("startDate/{startDate}")

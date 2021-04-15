@@ -30,8 +30,8 @@ public class Offer {
     private Long id;
     @Column(name = "product_id")
     private Integer productID;
-    @Column(name = "company_id")
-    private Integer companyID;
+    @Column(name = "branch_id")
+    private Integer branchId;
     @Column(name = "card_id")
     private Integer cardID;
     @Column(name = "price")
