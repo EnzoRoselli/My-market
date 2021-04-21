@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import tesis.offer.models.OfertaDTO;
 import tesis.offer.models.Offer;
 import tesis.offer.models.OfferTypes;
 import tesis.offer.repositories.OfferRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,14 +72,10 @@ public class OfferController {
     }
 
     @GetMapping("")
-    public List<Offer> getByFilters(@RequestParam(required = false, defaultValue = CLASIFICATIONS) List<String> clasificaciones,
-                                    @RequestParam(required = false, defaultValue = OFFER_TYPES) List<OfferTypes> tipos,
+    public List<OfertaDTO> getByFilters(@RequestParam(required = false, defaultValue = CLASIFICATIONS) List<String> clasificaciones,
+                                    @RequestParam(required = false, defaultValue = OFFER_TYPES) List<String> tipos,
                                     @RequestParam(required = false, defaultValue = "") String nombre) {
-        List<Offer> ofertas = repo.findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime.now(), LocalDateTime.now(), tipos);
-        List<String> products = getProductsByClasificationsAndName(clasificaciones,nombre);
-        return ofertas.stream()
-                .filter(v -> products.contains(String.valueOf(v.getProductID())))
-                .collect(Collectors.toList());
+        return OfertaDTO.getInfo(repo.dameProductos(LocalDateTime.now(), LocalDateTime.now(),tipos ,clasificaciones,nombre));
     }
 
     public List getProductsByClasificationsAndName(List<String> clasificaciones, String nombre) {

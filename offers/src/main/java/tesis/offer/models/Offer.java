@@ -47,8 +47,6 @@ public class Offer {
     private LocalDateTime toDate;
     @Column(name = "available")
     private Boolean avaliable;
-    @Column(name = "description")
-    private String description;
     @Column(name = "old_price")
     private String oldPrice;
 

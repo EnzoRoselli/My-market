@@ -26,6 +26,8 @@ public class Branch {
     private Long id;
     @Column(name = "company_id")
     private Long companyID;
+    @Column(name = "user_id")
+    private Long userID;
     @Column(name = "address")
     private String address;
     @Column(name = "city")

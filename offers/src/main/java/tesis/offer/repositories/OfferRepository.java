@@ -23,6 +23,15 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             nativeQuery = true)
     List<Offer> findByCompanyID(Integer id);
 
+    @Query(value = "SELECT offers.id as ofID,offers.branch_id,offers.card_id,offers.price,offers.offer_type,offers.from_date,offers.to_date,offers.available,offers.old_price," +
+            "products.id,products.name,products.image,products.clasification, products.description FROM db_my_market.offers  \n " +
+            "inner join db_my_market.products on products.id=offers.product_id \n" +
+            "where offers.from_date<= ?1 and offers.to_date>=?2 and offers.available=true and offers.offer_type in (?3)" +
+            "and products.clasification in (?4) " +
+            "and products.name LIKE CONCAT('%',?5,'%')" +
+            "",nativeQuery = true)
+    List<Object[]> dameProductos(LocalDateTime start, LocalDateTime end, List<String> offers,List<String> clasifications, String name);
+
     List<Offer> findByOfferTypeAndAvaliableTrue(OfferTypes type);
 
     List<Offer> findByFromDateGreaterThanEqualAndAvaliableTrue(LocalDateTime date);
