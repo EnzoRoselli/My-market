@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tesis.company.models.Branch;
 import tesis.company.repositories.BranchRepository;
 
-@RequestMapping("/branch")
+@RequestMapping
 @RestController
 @Slf4j
 @XRayEnabled

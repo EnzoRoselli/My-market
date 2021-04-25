@@ -24,8 +24,8 @@ public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "company_id")
-    private Long companyID;
+    @Column(name = "name")
+    private String name;
     @Column(name = "user_id")
     private Long userID;
     @Column(name = "address")
