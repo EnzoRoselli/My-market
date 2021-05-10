@@ -1,7 +1,6 @@
 package tesis.company.controllers;
 
 import com.amazonaws.xray.spring.aop.XRayEnabled;
-import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +25,7 @@ public class BranchController {
     private final BranchRepository repo;
 
     @PostMapping
-    public void save(@RequestBody @NotNull List<Branch> branch) {
+    public void save(@RequestBody List<Branch> branch) {
         repo.saveAll(branch);
     }
 
@@ -38,5 +37,10 @@ public class BranchController {
     @GetMapping("id/{id}")
     public Branch getById(@PathVariable("id") Long id) {
         return repo.findById(id).orElseThrow(() -> new RuntimeException("User not not found"));
+    }
+
+    @GetMapping("user/{userId}")
+    public List<Branch> getByUserId(@PathVariable("userId") Long id) {
+        return repo.getByUserID(id);
     }
 }
