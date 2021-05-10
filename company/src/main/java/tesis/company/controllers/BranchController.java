@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tesis.company.models.Branch;
 import tesis.company.repositories.BranchRepository;
 
+import java.util.List;
+
 @RequestMapping
 @RestController
 @Slf4j
@@ -24,8 +26,8 @@ public class BranchController {
     private final BranchRepository repo;
 
     @PostMapping
-    public Branch save(@RequestBody @NotNull Branch branch) {
-        return repo.save(branch);
+    public void save(@RequestBody @NotNull List<Branch> branch) {
+        repo.saveAll(branch);
     }
 
     @DeleteMapping("id/{id}")
