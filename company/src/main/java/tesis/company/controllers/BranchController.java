@@ -36,7 +36,7 @@ public class BranchController {
 
     @GetMapping("id/{id}")
     public Branch getById(@PathVariable("id") Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not not found"));
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @GetMapping("user/{userId}")
