@@ -17,14 +17,12 @@ import org.springframework.web.client.RestTemplate;
 import tesis.offer.models.OfertaDTO;
 import tesis.offer.models.Offer;
 import tesis.offer.models.OfferTypes;
+import tesis.offer.models.SaveMultipleOffers;
 import tesis.offer.repositories.OfferRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static tesis.offer.utils.ParametersDefaultValue.CLASIFICATIONS;
 import static tesis.offer.utils.ParametersDefaultValue.OFFER_TYPES;
@@ -44,6 +42,11 @@ public class OfferController {
     @PostMapping("/")
     public Offer save(@RequestBody @NotNull Offer offer) {
         return repo.save(offer);
+    }
+
+    @PostMapping("/multipleSave")
+    public void saveMultipleOffers(@RequestBody @NotNull SaveMultipleOffers offer) {
+        repo.saveAll(Offer.fromMultipleOffers(offer));
     }
 
     @DeleteMapping("id/{id}")
@@ -68,27 +71,27 @@ public class OfferController {
 
     @GetMapping("type/{type}")
     public List<Offer> getByClasification(@PathVariable("type") String type) {
-        return repo.findByOfferTypeAndAvaliableTrue(OfferTypes.valueOf(type));
+        return repo.findByOfferTypeAndAvailableTrue(OfferTypes.valueOf(type));
     }
 
     @GetMapping("")
     public List<OfertaDTO> getByFilters(@RequestParam(required = false, defaultValue = CLASIFICATIONS) List<String> clasificaciones,
-                                    @RequestParam(required = false, defaultValue = OFFER_TYPES) List<String> tipos,
-                                    @RequestParam(required = false, defaultValue = "") String nombre) {
-        return OfertaDTO.getInfo(repo.dameProductos(LocalDateTime.now(), LocalDateTime.now(),tipos ,clasificaciones,nombre));
+                                        @RequestParam(required = false, defaultValue = OFFER_TYPES) List<String> tipos,
+                                        @RequestParam(required = false, defaultValue = "") String nombre) {
+        return OfertaDTO.getInfo(repo.dameProductos(LocalDateTime.now(), LocalDateTime.now(), tipos, clasificaciones, nombre));
     }
 
     public List getProductsByClasificationsAndName(List<String> clasificaciones, String nombre) {
 
         RestTemplate rt = new RestTemplate();
-        return rt.getForObject(productUrl + "/product/ids?clasificaciones=" + clasificaciones.toString().replace("[", "").replace("]", "")+"&nombre="+nombre, List.class);
+        return rt.getForObject(productUrl + "/product/ids?clasificaciones=" + clasificaciones.toString().replace("[", "").replace("]", "") + "&nombre=" + nombre, List.class);
     }
 
     @GetMapping("startDate/{startDate}")
     public List<Offer> getByStartDate(@PathVariable("startDate") String startDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(startDate, formatter);
-        return repo.findByFromDateGreaterThanEqualAndAvaliableTrue(dateTime);
+        return repo.findByFromDateGreaterThanEqualAndAvailableTrue(dateTime);
     }
 
     @GetMapping("startDate/{startDate}/endDate/{endDate}")
@@ -96,7 +99,7 @@ public class OfferController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         LocalDateTime startTime = LocalDateTime.parse(startDate, formatter);
         LocalDateTime endTime = LocalDateTime.parse(endDate, formatter);
-        return repo.findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrue(startTime, endTime);
+        return repo.findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvailableTrue(startTime, endTime);
     }
 
     @GetMapping("date/{date}")

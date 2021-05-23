@@ -24,7 +24,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findByCompanyID(Integer id);
 
     @Query(value = "SELECT offers.id as ofID,offers.branch_id,offers.card_id,offers.price,offers.offer_type,offers.from_date,offers.to_date,offers.available,offers.old_price," +
-            "products.id,products.name,products.image,products.clasification, products.description FROM db_my_market.offers  \n " +
+            "products.id,products.name,products.image,products.clasification, products.description, offers.offer_description as descrip FROM db_my_market.offers  \n " +
             "inner join db_my_market.products on products.id=offers.product_id \n" +
             "where offers.from_date<= ?1 and offers.to_date>=?2 and offers.available=true and offers.offer_type in (?3)" +
             "and products.clasification in (?4) " +
@@ -32,13 +32,13 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             "",nativeQuery = true)
     List<Object[]> dameProductos(LocalDateTime start, LocalDateTime end, List<String> offers,List<String> clasifications, String name);
 
-    List<Offer> findByOfferTypeAndAvaliableTrue(OfferTypes type);
+    List<Offer> findByOfferTypeAndAvailableTrue(OfferTypes type);
 
-    List<Offer> findByFromDateGreaterThanEqualAndAvaliableTrue(LocalDateTime date);
+    List<Offer> findByFromDateGreaterThanEqualAndAvailableTrue(LocalDateTime date);
 
-    List<Offer> findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrueAndOfferTypeIn(LocalDateTime dateStart,LocalDateTime dateEnd,List<OfferTypes> offers);
+    List<Offer> findAllByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvailableTrueAndOfferTypeIn(LocalDateTime dateStart,LocalDateTime dateEnd,List<OfferTypes> offers);
 
-    List<Offer> findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvaliableTrue(LocalDateTime start, LocalDateTime end);
+    List<Offer> findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvailableTrue(LocalDateTime start, LocalDateTime end);
 
     @Query(
             value = "SELECT * FROM offers o " +

@@ -18,10 +18,12 @@ public class OfertaDTO {
     private Integer cardID;
     private Float price;
     private String offerType;
+    private String offerDescription;
     private Timestamp fromDate;
     private Timestamp toDate;
     private Boolean avaliable;
     private String oldPrice;
+
     private Integer idProduct;
     private String nameProduct;
     private String imageProduct;
@@ -48,6 +50,7 @@ public class OfertaDTO {
                 .imageProduct((String) dto[11])
                 .clasificationProduct((String) dto[12])
                 .descriptionProduct((String) dto[13])
+                .offerDescription((String)dto[14])
                 .build();
     }
 

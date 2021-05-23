@@ -16,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Entity
 @Table(name = "offers")
@@ -46,8 +49,31 @@ public class Offer {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime toDate;
     @Column(name = "available")
-    private Boolean avaliable;
+    @Builder.Default
+    private Boolean available=true;
     @Column(name = "old_price")
     private String oldPrice;
+    @Column(name = "offer_description")
+    private String offerDescription;
 
+    public static List<Offer> fromMultipleOffers(SaveMultipleOffers offer) {
+        return IntStream.range(0, offer.getBranchIDs().size())
+                .mapToObj(index -> Offer.from(offer, index))
+                .collect(Collectors.toList());
+    }
+
+    public static Offer from(SaveMultipleOffers offer, Integer branchIDindex) {
+        return Offer.builder()
+                .available(offer.getAvailable())
+                .branchID(offer.getBranchIDs().get(branchIDindex))
+                .cardID(offer.getCardID())
+                .fromDate(offer.getFromDate())
+                .toDate(offer.getToDate())
+                .offerDescription(offer.getOfferDescription())
+                .oldPrice(offer.getOldPrice())
+                .offerType(offer.getOfferType())
+                .price(offer.getPrice())
+                .productID(offer.getProductID())
+                .build();
+    }
 }
