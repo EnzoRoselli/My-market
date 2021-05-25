@@ -27,7 +27,6 @@ import java.util.List;
 import static tesis.offer.utils.ParametersDefaultValue.CLASIFICATIONS;
 import static tesis.offer.utils.ParametersDefaultValue.OFFER_TYPES;
 
-@RequestMapping
 @RestController
 @Slf4j
 @XRayEnabled
@@ -117,5 +116,10 @@ public class OfferController {
     @GetMapping("city/{city}")
     public List<Offer> getByCity(@PathVariable("city") String city) {
         return repo.findByCity(city);
+    }
+
+    @GetMapping("id/{id}")
+    public Offer getById(@PathVariable Long id){
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found"));
     }
 }
