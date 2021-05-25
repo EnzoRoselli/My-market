@@ -33,6 +33,11 @@ public class UserController {
 
     @GetMapping("id/{id}")
     public User getById(@PathVariable("id") Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not not found"));
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @GetMapping("email/{email}")
+    public Long getIdByEmail(@PathVariable String email){
+        return repo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found")).getId();
     }
 }
