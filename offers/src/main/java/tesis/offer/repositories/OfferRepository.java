@@ -47,14 +47,12 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findBySpecificDate(LocalDateTime specificDate);
 
     @Query(
-            value = "select offers.* from offers \n" +
-                    " inner join products pr on pr.id=offers.product_id\n" +
-                    " inner join subscriptions sub on sub.product_id = pr.id\n" +
-                    " inner join users us on us.id = sub.user_id\n" +
-                    " where now()>=offers.from_date and now()<=offers.to_date\n" +
-                    " and offers.available=true\n" +
-                    " and us.id=?1\n" +
-                    " group by(offers.id)",
+            value = "select offers.* from offers\n" +
+                    "inner join branches br on br.id = offers.branch_id\n" +
+                    "inner join users us on us.id = br.user_id\n" +
+                    "and offers.available=true\n" +
+                    "and us.id=?1\n" +
+                    "group by(offers.id)",
             nativeQuery = true)
     List<Offer> findAvailableOfferForUser(Long idUser);
 
