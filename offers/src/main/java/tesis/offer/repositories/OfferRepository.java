@@ -63,5 +63,18 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             nativeQuery = true)
     List<Offer> findByCity(String city);
 
+    @Query(
+            value = "select * from offers o \n" +
+                    "where product_id = ?1 AND CAST(price AS DECIMAL) = CAST(?2 AS DECIMAL) \n" +
+                    "AND card_id <=> ?3 AND offer_type = ?4 AND \n" +
+                    "from_date = ?5 and to_date = ?6 AND \n" +
+                    "available = TRUE AND old_price = ?7 and offer_description <=> ?8",
+            nativeQuery = true)
+    List<Offer> findSimilarOffers(Integer productID, Float price, Integer cardID, String offerType, LocalDateTime fromDate, LocalDateTime toDate, String oldPrice, String offerDescription);
 
+    @Query(
+            value = "select name from products \n" +
+                    "where id = ?1"
+            ,nativeQuery = true)
+    String getProductName(Integer productID);
 }

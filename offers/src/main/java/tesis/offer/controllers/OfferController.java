@@ -5,14 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import tesis.offer.models.OfertaDTO;
 import tesis.offer.models.Offer;
@@ -22,7 +15,11 @@ import tesis.offer.repositories.OfferRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static tesis.offer.utils.ParametersDefaultValue.CLASIFICATIONS;
 import static tesis.offer.utils.ParametersDefaultValue.OFFER_TYPES;
@@ -44,13 +41,16 @@ public class OfferController {
     }
 
     @PostMapping("/multipleSave")
-    public void saveMultipleOffers(@RequestBody @NotNull SaveMultipleOffers offer) {
+    public void saveMultipleOffers(@RequestBody SaveMultipleOffers offer) {
         repo.saveAll(Offer.fromMultipleOffers(offer));
     }
 
     @DeleteMapping("id/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        repo.deleteById(id);
+    public void delete(@PathVariable Long id) {
+        SaveMultipleOffers offer = SaveMultipleOffers.from(repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found")));
+        List<Offer> similarOffers = getOfferFromAllBranches(offer);
+
+        repo.deleteAll(similarOffers);
     }
 
     @GetMapping("product/{id}")
@@ -81,7 +81,6 @@ public class OfferController {
     }
 
     public List getProductsByClasificationsAndName(List<String> clasificaciones, String nombre) {
-
         RestTemplate rt = new RestTemplate();
         return rt.getForObject(productUrl + "/product/ids?clasificaciones=" + clasificaciones.toString().replace("[", "").replace("]", "") + "&nombre=" + nombre, List.class);
     }
@@ -109,8 +108,30 @@ public class OfferController {
     }
 
     @GetMapping("user/{user}")
-    public List<Offer> getBySpecificDate(@PathVariable("user") Long userId) {
-        return repo.findAvailableOfferForUser(userId);
+    public List<SaveMultipleOffers> getByUser(@PathVariable("user") Long userId) {
+        List<SaveMultipleOffers> offers = SaveMultipleOffers.fromOffers(repo.findAvailableOfferForUser(userId));
+        List<Long> offersToDelete = new ArrayList<>();
+
+        for (int i = 0; i < offers.size()-1; i++) {
+            for (int j = i+1; j < offers.size(); j++) {
+
+                if (!offersToDelete.contains(offers.get(j).getId())){
+                    if (offers.get(i).equals(offers.get(j))){
+                        offers.get(i).getBranchIDs().addAll(offers.get(j).getBranchIDs());
+                        offersToDelete.add(offers.get(j).getId());
+                    }
+
+                }
+            }
+        }
+
+        offers.removeIf(offer -> offersToDelete.contains(offer.getId()));
+        offers.stream()
+                .forEach(offer -> {
+                    offer.setNameProduct(repo.getProductName(offer.getProductID()));
+        });
+
+        return offers;
     }
 
     @GetMapping("city/{city}")
@@ -119,7 +140,58 @@ public class OfferController {
     }
 
     @GetMapping("id/{id}")
-    public Offer getById(@PathVariable Long id){
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found"));
+    public SaveMultipleOffers getById(@PathVariable Long id){
+        SaveMultipleOffers offer = SaveMultipleOffers.from(repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found")));
+        List<Offer> similarOffers = getOfferFromAllBranches(offer);
+
+        similarOffers.stream().forEach(similarOffer -> {
+            if (offer.getId() != similarOffer.getId())
+                offer.getBranchIDs().add(similarOffer.getBranchID());
+        });
+
+        return offer;
+    }
+
+    public List<Offer> getOfferFromAllBranches(SaveMultipleOffers offer){
+        return  repo.findSimilarOffers(offer.getProductID(), offer.getPrice(), offer.getCardID(), offer.getOfferType().toString(),
+                offer.getFromDate(), offer.getToDate(), offer.getOldPrice(), offer.getOfferDescription());
+    }
+
+    @PutMapping
+    public List<Offer> updateOffer(@RequestBody SaveMultipleOffers offers){
+        List<Offer> offersToUpdate = getOfferFromAllBranches(getById(offers.getId()));
+        List<Offer> offersToRemove = new ArrayList<>();
+        List<Integer> branchesFromOffersToUpdate = new ArrayList<>();
+
+
+        for (Offer offerToUpdate : offersToUpdate) {
+            if (!offers.getBranchIDs().contains(offerToUpdate.getBranchID())){
+                offersToRemove.add(offerToUpdate);
+            }
+            branchesFromOffersToUpdate.add(offerToUpdate.getBranchID());
+        }
+
+        offersToUpdate.removeAll(offersToRemove);
+        offersToUpdate = offersToUpdate.stream()
+                .map(offer -> offer = Offer.fromUpdate(offers, offer.getId(), offer.getBranchID()))
+                .collect(Collectors.toList());
+
+        //Ver si hay branches en "offers" que no estan en "offersToUpdate"
+        //Si ese es el caso, tomar las IDs de las branches y ponerlas en un array de Integer
+        //Tomar todos los datos de SaveMultipleOffers y settearle las IDS de las branches en setBranchIDs
+        //Llamar al metodo saveMultipleOffer y pasarle el objeto del paso anterior
+
+
+        List<Integer> branchIDs = new ArrayList<>();
+        for (Integer branch:offers.getBranchIDs()) {
+            if (!branchesFromOffersToUpdate.contains(branch)){
+                branchIDs.add(branch);
+            }
+        }
+
+        offers.setBranchIDs(branchIDs);
+        saveMultipleOffers(offers);
+        repo.deleteAll(offersToRemove);
+        return repo.saveAll(offersToUpdate);
     }
 }

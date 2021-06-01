@@ -67,13 +67,29 @@ public class Offer {
                 .available(offer.getAvailable())
                 .branchID(offer.getBranchIDs().get(branchIDindex))
                 .cardID(offer.getCardID())
-                .fromDate(offer.getFromDate())
-                .toDate(offer.getToDate())
+                .fromDate(offer.getFromDate().plusHours(3))
+                .toDate(offer.getToDate().plusHours(3))
                 .offerDescription(offer.getOfferDescription())
                 .oldPrice(offer.getOldPrice())
                 .offerType(offer.getOfferType())
                 .price(offer.getPrice())
                 .productID(offer.getProductID())
+                .build();
+    }
+
+    public static Offer fromUpdate(SaveMultipleOffers offer, Long offerID, Integer branchID) {
+        return Offer.builder()
+                .id(offerID)
+                .available(offer.getAvailable())
+                .cardID(offer.getCardID())
+                .fromDate(offer.getFromDate().plusHours(3))
+                .toDate(offer.getToDate().plusHours(3))
+                .offerDescription(offer.getOfferDescription())
+                .oldPrice(offer.getOldPrice())
+                .offerType(offer.getOfferType())
+                .price(offer.getPrice())
+                .productID(offer.getProductID())
+                .branchID(branchID)
                 .build();
     }
 }

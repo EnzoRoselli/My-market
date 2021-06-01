@@ -60,7 +60,6 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
-
     @PostMapping
     public Product save(@RequestBody @NotNull Product product) {
         return repo.save(product);
@@ -70,5 +69,4 @@ public class ProductController {
     public void delete(@PathVariable("id") Long id) {
         repo.deleteById(id);
     }
-
 }
