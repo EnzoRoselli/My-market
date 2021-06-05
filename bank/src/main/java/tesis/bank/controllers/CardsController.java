@@ -27,7 +27,7 @@ public class CardsController {
         return repo.save(card);
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         repo.deleteById(id);
     }

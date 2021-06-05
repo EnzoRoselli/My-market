@@ -34,7 +34,7 @@ public class ProductController {
                 .orElseThrow(() -> new RuntimeException("Product with given name does not exist."));
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("{id}")
     public Product getById(@PathVariable("id") Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with given id does not exist."));
@@ -65,7 +65,7 @@ public class ProductController {
         return repo.save(product);
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         repo.deleteById(id);
     }

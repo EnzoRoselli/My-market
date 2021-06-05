@@ -29,12 +29,12 @@ public class BranchController {
         repo.saveAll(branch);
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         repo.deleteById(id);
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("{id}")
     public Branch getById(@PathVariable("id") Long id) {
         return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }

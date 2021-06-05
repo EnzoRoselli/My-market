@@ -45,7 +45,7 @@ public class OfferController {
         repo.saveAll(Offer.fromMultipleOffers(offer));
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         SaveMultipleOffers offer = SaveMultipleOffers.from(repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found")));
         List<Offer> similarOffers = getOfferFromAllBranches(offer);
@@ -139,7 +139,7 @@ public class OfferController {
         return repo.findByCity(city);
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("{id}")
     public SaveMultipleOffers getById(@PathVariable Long id){
         SaveMultipleOffers offer = SaveMultipleOffers.from(repo.findById(id).orElseThrow(() -> new RuntimeException("Offer not found")));
         List<Offer> similarOffers = getOfferFromAllBranches(offer);

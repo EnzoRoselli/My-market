@@ -26,7 +26,7 @@ public class AccountsController {
         return repo.save(account);
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         repo.deleteById(id);
     }
