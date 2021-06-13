@@ -21,6 +21,6 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        return new ErrorResponse("422",ex.getMessage(), LocalDateTime.now());
+        return new ErrorResponse("404",ex.getMessage(), LocalDateTime.now());
     }
 }
