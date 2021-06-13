@@ -10,6 +10,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class SaveMultipleOffers {
 
     public static List<SaveMultipleOffers> fromOffers(List<Offer> offers) {
         return offers.stream()
-                .map(offer -> SaveMultipleOffers.from(offer))
+                .map(SaveMultipleOffers::from)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +47,7 @@ public class SaveMultipleOffers {
         return SaveMultipleOffers.builder()
                 .id(offer.getId())
                 .productID(offer.getProductID())
-                .branchIDs(new ArrayList<>(Arrays.asList(offer.getBranchID())))
+                .branchIDs(new ArrayList<>(Collections.singletonList(offer.getBranchID())))
                 .cardID(offer.getCardID())
                 .price(offer.getPrice())
                 .offerType(offer.getOfferType())

@@ -10,7 +10,12 @@ public class ExceptionController {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public String handleUserDoesNotExists(Exception ex) {
-        return ex.getMessage();
+    public ErrorResponse handleUserDoesNotExists(Exception ex) {
+        return new ErrorResponse("422",ex.getMessage(), LocalDateTime.now());
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return new ErrorResponse("422",ex.getMessage(), LocalDateTime.now());
     }
 }
