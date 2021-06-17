@@ -176,12 +176,6 @@ public class OfferController {
                 .map(offer -> offer = Offer.fromUpdate(offers, offer.getId(), offer.getBranchID()))
                 .collect(Collectors.toList());
 
-        //Ver si hay branches en "offers" que no estan en "offersToUpdate"
-        //Si ese es el caso, tomar las IDs de las branches y ponerlas en un array de Integer
-        //Tomar todos los datos de SaveMultipleOffers y settearle las IDS de las branches en setBranchIDs
-        //Llamar al metodo saveMultipleOffer y pasarle el objeto del paso anterior
-
-
         List<Integer> branchIDs = new ArrayList<>();
         for (Integer branch:offers.getBranchIDs()) {
             if (!branchesFromOffersToUpdate.contains(branch)){
