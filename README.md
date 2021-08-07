@@ -14,6 +14,13 @@ In this repository you will find the backend code of our application, attached w
 - AWS X-Ray
 - Swagger
 
+## Requisitos:
+- Java 11: https://www.oracle.com/ar/java/technologies/javase-jdk11-downloads.html
+- Spring Boot 2.4.2: https://spring.io/projects/spring-boot
+- Maven: https://maven.apache.org/download.cgi
+- Docker: https://www.docker.com/products/docker-desktop
+- MySQL 8: https://www.mysql.com/downloads/
+
 ## How to Use :pencil:
 - You will need to create a local database in MySQL with the name you wish, then run the queries from schema.sql
 - In application.properties you have the Environment Variables DB_URL, DB_USERNAME and DB_PASSWORD
