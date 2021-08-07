@@ -22,7 +22,8 @@ In this repository you will find the backend code of our application, attached w
 - MySQL 8: https://www.mysql.com/downloads/
 
 ## How to Use :pencil:
-- You will need to create a local database in MySQL with the name you wish, then run the queries from schema.sql
+- Clone project
+- Create a local database in MySQL with the name you wish, then run the queries from schema.sql
 - In application.properties you have the Environment Variables DB_URL, DB_USERNAME and DB_PASSWORD
 - Configure the Environment Variables in your IDE and then run the application.
 - As default vaules you can use:
