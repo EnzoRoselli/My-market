@@ -33,9 +33,10 @@ In this repository you will find the backend code of our application, attached w
 - Use Swagger to access all the endpoints : https://app.swaggerhub.com/apis/EnzoRoselli/MyMarket/1.0.0
 
 ## Branching (GitFlow) :sparkler:
-- Master: Stores the finished releases
-- Develop: Stores all completed features that haven’t yet been released
 - Feature_MigrateToPhone: Local/remote branch for a feature. After merge it in develop, delete it.
+- Develop: Stores all completed features that haven’t yet been released
+- Master: Stores the finished releases
+
  
 ---
 By Facundo Mateu, Enzo Roselli, and Matias Nicoletti
