@@ -5,7 +5,7 @@ My Market is a project done for our thesis, our intention was to centralize in o
 
 In this repository you will find the backend code of our application, attached with the technologies used and instructions to run the microservices.
 
-## Stack: :computer:
+## Stack :computer:
 - Java 11
 - Spring Boot 2.4.2
 - Maven
@@ -14,7 +14,7 @@ In this repository you will find the backend code of our application, attached w
 - AWS X-Ray
 - Swagger
 
-## Requisitos: :clipboard:
+## Requisitos :clipboard:
 - Java 11: https://www.oracle.com/ar/java/technologies/javase-jdk11-downloads.html
 - Spring Boot 2.4.2: https://spring.io/projects/spring-boot
 - Maven: https://maven.apache.org/download.cgi
@@ -32,7 +32,7 @@ In this repository you will find the backend code of our application, attached w
   - DB_PASSWORD = 9f1e2b88-fa7f-418f-9406-799d52abb3b3
 - Use Swagger to access all the endpoints : https://app.swaggerhub.com/apis/EnzoRoselli/MyMarket/1.0.0
 
-## Branching (GitFlow)
+## Branching (GitFlow) :sparkler:
 - Master: Stores the finished releases
 - Develop: Stores all completed features that haven’t yet been released
 - Feature_MigrateToPhone: Local/remote branch for a feature. After merge it in develop, delete it.
