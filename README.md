@@ -14,12 +14,13 @@ In this repository you will find the backend code of our application, attached w
 - AWS X-Ray
 - Swagger
 
-## Requisitos :clipboard:
+## Requirements :clipboard:
 - Java 11: https://www.oracle.com/ar/java/technologies/javase-jdk11-downloads.html
 - Spring Boot 2.4.2: https://spring.io/projects/spring-boot
 - Maven: https://maven.apache.org/download.cgi
 - Docker: https://www.docker.com/products/docker-desktop
 - MySQL 8: https://www.mysql.com/downloads/
+- GIT: https://git-scm.com/doc
 
 ## How to Use :pencil:
 - Clone project
