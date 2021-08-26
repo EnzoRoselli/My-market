@@ -53,19 +53,14 @@ public class OfferController {
         repo.deleteAll(similarOffers);
     }
 
-    @GetMapping("product/{id}")
+    @GetMapping("products/{id}")
     public List<Offer> getByProductId(@PathVariable("id") Integer id) {
         return repo.findByProductID(id);
     }
 
-    @GetMapping("branch/{id}")
+    @GetMapping("branches/{id}")
     public List<Offer> getByBranchId(@PathVariable("id") Integer id) {
         return repo.findByBranchID(id);
-    }
-
-    @GetMapping("company/{id}")
-    public List<Offer> getByCompanyId(@PathVariable("id") Integer id) {
-        return repo.findByCompanyID(id);
     }
 
     @GetMapping("type/{type}")
@@ -100,15 +95,15 @@ public class OfferController {
         return repo.findByFromDateLessThanEqualAndToDateGreaterThanEqualAndAvailableTrue(startTime, endTime);
     }
 
-    @GetMapping("date/{date}")
+    @GetMapping("{date}")
     public List<Offer> getBySpecificDate(@PathVariable("date") String specificDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(specificDate, formatter);
         return repo.findBySpecificDate(dateTime);
     }
 
-    @GetMapping("user/{user}")
-    public List<SaveMultipleOffers> getByUser(@PathVariable("user") Long userId) {
+    @GetMapping("users/{id}")
+    public List<SaveMultipleOffers> getByUser(@PathVariable("id") Long userId) {
         List<SaveMultipleOffers> offers = SaveMultipleOffers.fromOffers(repo.findAvailableOfferForUser(userId));
         List<Long> offersToDelete = new ArrayList<>();
 
@@ -134,7 +129,7 @@ public class OfferController {
         return offers;
     }
 
-    @GetMapping("city/{city}")
+    @GetMapping("cities/{name}")
     public List<Offer> getByCity(@PathVariable("city") String city) {
         return repo.findByCity(city);
     }
@@ -175,12 +170,6 @@ public class OfferController {
         offersToUpdate = offersToUpdate.stream()
                 .map(offer -> offer = Offer.fromUpdate(offers, offer.getId(), offer.getBranchID()))
                 .collect(Collectors.toList());
-
-        //Ver si hay branches en "offers" que no estan en "offersToUpdate"
-        //Si ese es el caso, tomar las IDs de las branches y ponerlas en un array de Integer
-        //Tomar todos los datos de SaveMultipleOffers y settearle las IDS de las branches en setBranchIDs
-        //Llamar al metodo saveMultipleOffer y pasarle el objeto del paso anterior
-
 
         List<Integer> branchIDs = new ArrayList<>();
         for (Integer branch:offers.getBranchIDs()) {
