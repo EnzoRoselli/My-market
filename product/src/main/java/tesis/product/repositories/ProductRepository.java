@@ -1,9 +1,10 @@
-package tesis.product;
+package tesis.product.repositories;
 
 import net.bytebuddy.build.Plugin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import tesis.product.models.Product;
 
 import java.util.List;
 import java.util.Optional;

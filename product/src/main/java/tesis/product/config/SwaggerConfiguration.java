@@ -1,4 +1,4 @@
-package tesis.product;
+package tesis.product.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

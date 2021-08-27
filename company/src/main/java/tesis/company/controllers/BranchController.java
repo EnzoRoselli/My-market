@@ -39,7 +39,7 @@ public class BranchController {
         return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("users/{userId}")
     public List<Branch> getByUserId(@PathVariable("userId") Long id) {
         return repo.getByUserID(id);
     }

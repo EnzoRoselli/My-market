@@ -1,4 +1,4 @@
-package tesis.user;
+package tesis.user.controllers;
 
 import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.sun.istack.NotNull;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tesis.user.models.User;
+import tesis.user.repositories.UserRepository;
 
 @RequestMapping
 @RestController

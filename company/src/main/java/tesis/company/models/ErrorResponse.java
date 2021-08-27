@@ -1,4 +1,4 @@
-package tesis.offer.models;
+package tesis.company.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
